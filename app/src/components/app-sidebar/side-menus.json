@@ -6,6 +6,18 @@
     "icon": "home-3"
   },
   {
+    "key": "NpmAuth",
+    "href": "#/npm-auth",
+    "title": "Npm Auth",
+    "icon": "lock"
+  },
+  {
+    "key": "NewProject",
+    "href": "#/new-project",
+    "title": "New Project",
+    "icon": "emotion-laugh"
+  },
+  {
     "key": "LogViewer",
     "href": "#/log-viewer",
     "title": "Log Viewer",

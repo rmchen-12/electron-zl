@@ -1,15 +1,15 @@
 {
-  "name": "electron-antd",
+  "name": "electron-zl",
   "appId": "org.electron.electron-antd",
   "version": "1.0.0",
   "buildVersion": "0001",
   "private": false,
   "main": "dist/main/main.js",
-  "author": "lanten",
+  "author": "rmchen-12",
   "scripts": {
     "ts:dev": "ts-node -P build/tsconfig.json build/tasks/dev-server.ts",
     "ts:build": "ts-node -P build/tsconfig.json build/tasks/build.ts",
-    "dev": "cross-env NODE_ENV=development BUILD_ENV=dev npm run ts:dev",
+    "start": "cross-env NODE_ENV=development BUILD_ENV=dev npm run ts:dev",
     "build:dev": "cross-env NODE_ENV=production BUILD_ENV=dev npm run ts:build",
     "build": "cross-env NODE_ENV=production BUILD_ENV=prod npm run ts:build"
   },
@@ -75,10 +75,14 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lanten/electron-antd.git"
+    "url": "git+https://github.com/rmchen-12/electron-zl.git"
   },
   "bugs": {
-    "url": "https://github.com/lanten/electron-antd/issues"
+    "url": "https://github.com/rmchen-12/electron-zl/issues"
   },
-  "homepage": "https://github.com/lanten/electron-antd#readme"
+  "homepage": "https://github.com/rmchen-12/electron-zl#readme",
+  "dependencies": {
+    "@types/lodash": "^4.14.155",
+    "lodash": "^4.17.15"
+  }
 }

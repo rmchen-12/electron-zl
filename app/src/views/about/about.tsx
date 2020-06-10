@@ -1,5 +1,6 @@
 import React from 'react'
 import { shell } from 'electron'
+import { Space } from 'antd'
 
 import './about.less'
 
@@ -13,15 +14,17 @@ export default class About extends React.Component<PageProps> {
           Version {$tools.APP_VERSION}
         </p>
         <p className="fs-12 text-gray">
-          Copyright © {new Date().getFullYear()}{' '}
-          <a
-            onClick={() => {
-              shell.openExternal('https://github.com/lanten')
-            }}
-          >
-            lanten.
-          </a>{' '}
-          All rights (demo)
+          <Space>
+            Copyright © {new Date().getFullYear()}
+            <a
+              onClick={() => {
+                shell.openExternal('http://beta.zuolin.com/develop/#/')
+              }}
+            >
+              zuolin
+            </a>
+            All rights
+          </Space>
         </p>
       </div>
     )
