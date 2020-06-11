@@ -29,5 +29,5 @@
   },
   "material-icon-theme.activeIconPack": "react_redux",
   "create.defaultFileTemplate": "tsx",
-  "create.defaultFolderTemplate": "react-component"
+  "create.defaultFolderTemplate": "react-routes"
 }

@@ -1,18 +1,15 @@
 ## 快速上手
 
-安装
+安装 `yarn | cnpm i`
 
-```bash
-yarn
-# 或者
-cnpm i
-```
+启动调试 `yarn start | npm start`
 
-启动调试
+## 快速创建一个路由页面
 
-```bash
-npm run dev
-```
+- vscode 安装 `Create Item By Template`
+- `F1 | ctrl p` 唤起输入框后键入路径，这个项目是 `app/src/views/{your-route-name}`
+- 将在对应的路径里生成页面模板
+- 想自定义的话可以修改 `.vscode` 文件夹中的 `create-item.template.js` 文件
 
 ## 概览
 

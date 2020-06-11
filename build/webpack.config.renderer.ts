@@ -56,15 +56,6 @@ const webpackConfig: Configuration = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(sass|scss)$/,
-        use: [
-          ...styleLoader,
-          {
-            loader: 'sass-loader',
-          },
-        ],
-      },
-      {
         test: /\.(less)$/,
         use: [
           ...styleLoader,
