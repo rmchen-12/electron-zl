@@ -28,14 +28,21 @@
   - typescript
   - eslint
   - prettier
+  - lowdb
 
 - 后端
 
   - egg
+  - gitlab api
+  - mysql
 
 - 部署
   - docker
   - jenkins
+
+数据存储
+- 前端 `lowdb` , lodash api，操作简单 [简单使用介绍](https://molunerfinn.com/electron-vue-3/)
+- 后端 `mysql` ，因为公司用的 `mysql` ,觉得更贴近平时开发环境
 
 ## DevTools
 

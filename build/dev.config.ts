@@ -34,8 +34,8 @@ const devConfig = {
     prod: {
       variables: {
         API_PROTOCOL: 'http://',
-        API_HOST: 'yapi.demo.qunar.com',
-        API_BASE_PATH: '/mock/55986',
+        API_HOST: '10.1.10.34:7001',
+        API_BASE_PATH: '/',
       },
     },
   },

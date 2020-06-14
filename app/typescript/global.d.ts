@@ -17,4 +17,6 @@ declare namespace NodeJS {
   }
 }
 
+declare module 'lodash-id'
+
 declare const nodeRequire: NodeRequire

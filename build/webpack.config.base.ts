@@ -31,13 +31,14 @@ const webpackConfig: Configuration = {
       ((): { [key: string]: any } => {
         const defines = {}
         const variables = Object.assign({}, ENV_CONFIG.variables)
-        Object.keys(variables).forEach(key => {
+        Object.keys(variables).forEach((key) => {
           const val = variables[key]
           defines[`process.env.${key}`] = typeof val === 'string' ? `"${val}"` : JSON.stringify(val)
         })
         defines['$api'] = 'global.__$api'
         defines['$tools'] = 'global.__$tools'
         defines['$store'] = 'global.__$store'
+        defines['$db'] = 'global.__$db'
         return defines
       })()
     ),

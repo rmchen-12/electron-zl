@@ -24,8 +24,8 @@ declare interface NpmAuthState {
  * NpmAuthState 是组件的 state 类型声明
  * props 和 state 的默认值需要单独声明
  */
-export default class NpmAuth extends React.Component<PageProps, NpmAuthState> {
-  state: NpmAuthState = {
+export default class NpmAuth extends React.Component<Readonly<PageProps>, Readonly<NpmAuthState>> {
+  readonly state: NpmAuthState = {
     users: [],
     config: { packages: {} },
     packages: [],
@@ -127,7 +127,7 @@ export default class NpmAuth extends React.Component<PageProps, NpmAuthState> {
 
           <Row>
             <Col span="12">
-              {packages.map(packageName => (
+              {packages.map((packageName) => (
                 <CheckableTag
                   style={
                     packagesWithOwner.includes(packageName) && selectedPackage !== packageName
@@ -136,7 +136,7 @@ export default class NpmAuth extends React.Component<PageProps, NpmAuthState> {
                   }
                   key={packageName}
                   checked={selectedPackage === packageName}
-                  onChange={checked => this.handlePackageChange(packageName, checked)}
+                  onChange={(checked) => this.handlePackageChange(packageName, checked)}
                 >
                   <span className="fs-16">{packageName}</span>
                 </CheckableTag>
@@ -146,11 +146,11 @@ export default class NpmAuth extends React.Component<PageProps, NpmAuthState> {
               <Divider type="vertical" style={{ height: '100%' }}></Divider>
             </Col>
             <Col span="11">
-              {users.map(user => (
+              {users.map((user) => (
                 <CheckableTag
                   key={user}
                   checked={selectedUsers.indexOf(user) > -1}
-                  onChange={checked => this.handleUserChange(user, checked)}
+                  onChange={(checked) => this.handleUserChange(user, checked)}
                 >
                   <span className="fs-16">{user}</span>
                 </CheckableTag>
@@ -173,7 +173,7 @@ export default class NpmAuth extends React.Component<PageProps, NpmAuthState> {
 
   handleUserChange(user: string, checked: boolean) {
     const { selectedUsers } = this.state
-    const nextSelectedTags = checked ? [...selectedUsers, user] : selectedUsers.filter(t => t !== user)
+    const nextSelectedTags = checked ? [...selectedUsers, user] : selectedUsers.filter((t) => t !== user)
     this.setState({ selectedUsers: nextSelectedTags })
   }
 
@@ -182,16 +182,10 @@ export default class NpmAuth extends React.Component<PageProps, NpmAuthState> {
   // 类似@aclink/test这些带scope的也需要作为可选项
   completePackage(packages: string[]) {
     const reg = /(^@.*\/)(?=.*)/gm
-    const res = packages.map(v => {
+    const res = packages.map((v) => {
       const scope = v.match(reg)
       return scope ? `${scope[0]}*` : undefined
     })
-    return [
-      ..._(res)
-        .uniq()
-        .compact()
-        .valueOf(),
-      ...packages,
-    ]
+    return [..._(res).uniq().compact().valueOf(), ...packages]
   }
 } // class About end

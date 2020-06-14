@@ -1,80 +1,58 @@
 import React from 'react'
 import { remote } from 'electron'
-import { Button, Timeline, Space, PageHeader, Select } from 'antd'
+import { Button, Space, PageHeader, Card, List, Row, Col, Divider } from 'antd'
+import globby from 'globby'
 
 import './new-project.less'
 
-const { Option } = Select
+import { AdminFlow } from './workflow'
+import { ZappFlow } from './workflow/zapp'
 
-export default class NewProject extends React.Component<PageProps> {
-  state = { btnLoading: false, end: 'pc', tpl: 'micro', step: 1 }
+const { dialog } = remote
 
-  componentDidMount() {}
+declare interface NewProjectState {
+  btnLoading: boolean
+  end: ProjectNames
+  projects: Projects
+  functionDirs: string[]
+  microDirs: string[]
+  microFunctionsDirs: string[]
+}
 
-  openDir = () => {
-    remote.dialog
+export default class NewProject extends React.Component<PageProps, Readonly<NewProjectState>> {
+  readonly state: NewProjectState = {
+    btnLoading: false,
+    end: 'admin',
+    projects: { admin: { path: '' }, zapp: { path: '' }, 小程序: { path: '' } },
+    functionDirs: [''],
+    microDirs: [''],
+    microFunctionsDirs: [''],
+  }
+
+  componentDidMount() {
+    this.setProjects()
+  }
+
+  openDir = (end: ProjectNames) => {
+    dialog
       .showOpenDialog({ properties: ['openDirectory', 'createDirectory', 'promptToCreate'] })
       .then(({ canceled, filePaths }) => {
-        console.log(canceled, filePaths)
+        if (!canceled) {
+          this.getDb().updateProjects(end, filePaths[0])
+        }
       })
   }
 
-  lineConfig = () => {
-    const { end, tpl, step } = this.state
-    const step1 = [
-      {
-        done: true,
-        label: '选择用户端',
-        render: (
-          <Select value={end} style={{ width: 120 }} onChange={this.handleEndChange}>
-            <Option value="pc">PC端</Option>
-            <Option value="mobile">移动端</Option>
-            <Option value="mini">小程序</Option>
-          </Select>
-        ),
-      },
-    ]
-    const step2 = {
-      pc: {
-        done: true,
-        label: '选择模板类型',
-        render: (
-          <Select value={tpl} style={{ width: 120 }} onChange={this.handleTplChange}>
-            <Option value="micro">micro项目</Option>
-            <Option value="single">独立项目</Option>
-          </Select>
-        ),
-      },
-      mobile: {
-        done: true,
-        label: '选择模板类型',
-        render: (
-          <Select value={tpl} style={{ width: 120 }} onChange={this.handleTplChange}>
-            <Option value="class">class语法</Option>
-            <Option value="hooks">hooks语法</Option>
-          </Select>
-        ),
-      },
-      mini: {
-        done: true,
-        label: '选择模板类型',
-        render: (
-          <Select value={tpl} style={{ width: 120 }} onChange={this.handleTplChange}>
-            <Option value="class">class语法</Option>
-            <Option value="hooks">hooks语法</Option>
-          </Select>
-        ),
-      },
-    }
+  handleEndChange = (value: ProjectNames) => this.setState({ end: value })
 
-    return [...step1, step2[end]]
-  }
+  reset = () => this.setState({ end: 'admin' })
 
   render() {
-    const { btnLoading, step } = this.state
+    const { btnLoading, functionDirs, microDirs, microFunctionsDirs, projects } = this.state
+    console.log(this.state)
 
     return (
-      <div className="new-project" style={{ height: '100%' }}>
+      <div className="new-project">
         <PageHeader
           ghost={false}
           title="新建项目"
@@ -87,30 +65,92 @@ export default class NewProject extends React.Component<PageProps> {
             </Space>
           }
         />
-        <div className="p-20">
-          <Button onClick={this.openDir}>选择创建目录</Button>
-          <Timeline mode="alternate">
-            {this.lineConfig()
-              .slice(0, step)
-              .map((v, index) => (
-                <Timeline.Item color={v.done ? 'blue' : 'gray'} label={v.label} key={index}>
-                  {v.render}
-                </Timeline.Item>
-              ))}
-          </Timeline>
+
+        <Card bordered={false}>
+          <List
+            className="demo-loadmore-list"
+            itemLayout="horizontal"
+            dataSource={Object.entries(projects)}
+            renderItem={([name, { path }]) => (
+              <List.Item
+                actions={[
+                  <a onClick={() => this.openDir(name as ProjectNames)} key="1">
+                    选择工作目录
+                  </a>,
+                ]}
+              >
+                <div>{name}</div>
+                <div>{path === '' ? '还未设置工作目录' : path}</div>
+              </List.Item>
+            )}
+          />
+        </Card>
+
+        <div className="mt-20">
+          <Row>
+            <Col span="7">
+              <ZappFlow></ZappFlow>
+            </Col>
+            <Col span="1">
+              <Divider type="vertical" style={{ height: '100%' }}></Divider>
+            </Col>
+            <Col span="8">
+              <AdminFlow
+                functionDirs={functionDirs}
+                microDirs={microDirs}
+                microFunctionsDirs={microFunctionsDirs}
+              ></AdminFlow>
+            </Col>
+            <Col span="1">
+              <Divider type="vertical" style={{ height: '100%' }}></Divider>
+            </Col>
+            <Col span="7">小程序</Col>
+          </Row>
         </div>
       </div>
     )
   }
 
-  reset = () => this.setState({ end: 'pc', tpl: 'micro', step: 1 })
   submit = () => {}
 
-  handleEndChange = (value: string) => {
-    this.setState({ end: value, step: 2 })
+  setProjects = () => {
+    const projects = this.getDb().projects
+    this.setState({ projects }, this.readAdminDir)
   }
 
-  handleTplChange = (value: string) => {
-    this.setState({ tpl: value })
+  getDb = () => {
+    const modelName = 'projects'
+    return {
+      projects: $db.read().get(modelName).value(),
+      updateProjects: (key: ProjectNames, path: string) => {
+        const workPath = `${modelName}.${key}.path`
+        $db.read().set(workPath, path).write()
+        this.setProjects()
+      },
+    }
+  }
+
+  readAdminDir = async () => {
+    const { path } = this.state.projects.admin
+    console.log(path)
+
+    const functionsPath = `${path}/src/functions`
+    const functionDirs = await globby('*', {
+      cwd: functionsPath,
+      onlyDirectories: true,
+      unique: true,
+    })
+    const microDirs = await globby('micro-*', {
+      cwd: functionsPath,
+      onlyDirectories: true,
+      unique: true,
+    })
+    const microFunctionsDirs = await globby('micro-*/*-*', {
+      cwd: functionsPath,
+      onlyDirectories: true,
+      unique: true,
+    })
+
+    this.setState({ functionDirs, microDirs, microFunctionsDirs })
   }
 } // class About end

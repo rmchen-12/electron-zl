@@ -19,7 +19,7 @@ app.on('activate', () => {
   }
 })
 
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
   // if (process.platform !== 'darwin') {
   //   app.quit()
   // }
