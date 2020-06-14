@@ -1,12 +1,11 @@
 import React from 'react'
 import { remote } from 'electron'
-import { Button, Space, PageHeader, Card, List, Row, Col, Divider } from 'antd'
+import { Space, PageHeader, Row, Col, Divider } from 'antd'
 import globby from 'globby'
 
 import './new-project.less'
 
-import { AdminFlow } from './workflow'
-import { ZappFlow } from './workflow/zapp'
+import { AdminFlow, ZAppFlow } from './workflow'
 
 const { dialog } = remote
 
@@ -17,6 +16,7 @@ declare interface NewProjectState {
   functionDirs: string[]
   microDirs: string[]
   microFunctionsDirs: string[]
+  zappDirs: string[]
 }
 
 export default class NewProject extends React.Component<PageProps, Readonly<NewProjectState>> {
@@ -27,6 +27,7 @@ export default class NewProject extends React.Component<PageProps, Readonly<NewP
     functionDirs: [''],
     microDirs: [''],
     microFunctionsDirs: [''],
+    zappDirs: [''],
   }
 
   componentDidMount() {
@@ -48,58 +49,47 @@ export default class NewProject extends React.Component<PageProps, Readonly<NewP
   reset = () => this.setState({ end: 'admin' })
 
   render() {
-    const { btnLoading, functionDirs, microDirs, microFunctionsDirs, projects } = this.state
-    console.log(this.state)
+    const { functionDirs, microDirs, microFunctionsDirs, projects, zappDirs } = this.state
 
     return (
       <div className="new-project">
-        <PageHeader
-          ghost={false}
-          title="新建项目"
-          extra={
-            <Space>
-              <Button onClick={this.reset}>重置</Button>
-              <Button type="primary" onClick={this.submit} loading={btnLoading} disabled={false}>
-                确定
-              </Button>
-            </Space>
-          }
-        />
-
-        <Card bordered={false}>
-          <List
-            className="demo-loadmore-list"
-            itemLayout="horizontal"
-            dataSource={Object.entries(projects)}
-            renderItem={([name, { path }]) => (
-              <List.Item
-                actions={[
-                  <a onClick={() => this.openDir(name as ProjectNames)} key="1">
-                    选择工作目录
-                  </a>,
-                ]}
-              >
-                <div>{name}</div>
-                <div>{path === '' ? '还未设置工作目录' : path}</div>
-              </List.Item>
-            )}
-          />
-        </Card>
+        <PageHeader ghost={false} title="新建项目" />
 
         <div className="mt-20">
           <Row>
             <Col span="7">
-              <ZappFlow></ZappFlow>
+              <>
+                <Space direction="vertical" className="flex center-v mb-32">
+                  zapp
+                  <span>
+                    {projects.zapp.path === '' ? '还未设置工作目录，选择本地zapp目录' : projects.zapp.path}
+                  </span>
+                  <a onClick={() => this.openDir('zapp')}>选择工作目录</a>
+                </Space>
+                <ZAppFlow path={projects.zapp.path} zappDirs={zappDirs}></ZAppFlow>
+              </>
             </Col>
             <Col span="1">
               <Divider type="vertical" style={{ height: '100%' }}></Divider>
             </Col>
             <Col span="8">
-              <AdminFlow
-                functionDirs={functionDirs}
-                microDirs={microDirs}
-                microFunctionsDirs={microFunctionsDirs}
-              ></AdminFlow>
+              <>
+                <Space direction="vertical" className="flex center-v mb-32">
+                  admin
+                  <span>
+                    {projects.admin.path === ''
+                      ? '还未设置工作目录，选择本地admin目录(注意：是admin,不是ehome-admin)'
+                      : projects.admin.path}
+                  </span>
+                  <a onClick={() => this.openDir('admin')}>选择工作目录</a>
+                </Space>
+                <AdminFlow
+                  path={projects.admin.path}
+                  functionDirs={functionDirs}
+                  microDirs={microDirs}
+                  microFunctionsDirs={microFunctionsDirs}
+                ></AdminFlow>
+              </>
             </Col>
             <Col span="1">
               <Divider type="vertical" style={{ height: '100%' }}></Divider>
@@ -115,7 +105,10 @@ export default class NewProject extends React.Component<PageProps, Readonly<NewP
 
   setProjects = () => {
     const projects = this.getDb().projects
-    this.setState({ projects }, this.readAdminDir)
+    this.setState({ projects }, () => {
+      this.readAdminDir()
+      this.readZAppDir()
+    })
   }
 
   getDb = () => {
@@ -130,10 +123,19 @@ export default class NewProject extends React.Component<PageProps, Readonly<NewP
     }
   }
 
+  readZAppDir = async () => {
+    const { path } = this.state.projects.zapp
+    const zappDirs = await globby('*', {
+      cwd: path,
+      onlyDirectories: true,
+      unique: true,
+    })
+
+    this.setState({ zappDirs })
+  }
+
   readAdminDir = async () => {
     const { path } = this.state.projects.admin
-    console.log(path)
-
     const functionsPath = `${path}/src/functions`
     const functionDirs = await globby('*', {
       cwd: functionsPath,
