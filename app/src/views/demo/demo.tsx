@@ -1,7 +1,10 @@
 import * as React from 'react'
+import { remote } from 'electron'
 import { Button, Input, Spin, Card } from 'antd'
 
 import { withStore } from '@/src/components'
+
+const { ipcRenderer } = remote
 
 interface DemoProps extends PageProps, StoreProps {
   count: StoreStates['count']
@@ -21,7 +24,7 @@ declare interface DemoState {
  * props 和 state 的默认值需要单独声明
  */
 
-@withStore(['count', { countAlias: 'count' }])
+@withStore(['count', 'user', { countAlias: 'count' }])
 export default class Demo extends React.Component<DemoProps, DemoState> {
   // state 初始化
   readonly state: DemoState = {
@@ -34,10 +37,6 @@ export default class Demo extends React.Component<DemoProps, DemoState> {
   // 构造函数
   constructor(props: DemoProps) {
     super(props)
-  }
-
-  componentDidMount() {
-    console.log(this)
   }
 
   render() {

@@ -16,6 +16,7 @@ const DEFAULT_CONFIG = {
   checkStatus: true,
   headers: {
     'Content-Type': 'application/json',
+    // Authorization: `Bearer ${token}`,
   },
 }
 
@@ -24,11 +25,21 @@ const DEFAULT_PARAMS = {}
 
 /**
  * 发起一个请求
- * @param apiPath
- * @param params
- * @param optionsSource
+ * @param apiPath 路径
+ * @param params 传参
+ * @param optionsSource 请求options
+ * @param withToken 是否需要token
  */
-export async function request(apiPath: string, params?: RequestParams, optionsSource?: RequestOptions) {
+export async function request(
+  apiPath: string,
+  params?: RequestParams,
+  optionsSource?: RequestOptions,
+  withToken = true
+) {
+  if (withToken) {
+    const token = $db.read().get('token').value()
+    DEFAULT_CONFIG.headers['Authorization'] = `Bearer ${token}`
+  }
   const options: RequestOptions = Object.assign({}, DEFAULT_CONFIG, optionsSource)
   const { method, protocol, host, baseUrl, headers, responseType, checkStatus, formData } = options
   const sendData: AxiosRequestConfig = {
@@ -55,8 +66,7 @@ export async function request(apiPath: string, params?: RequestParams, optionsSo
   return axios(sendData)
     .then((res) => {
       const data: any = res.data
-
-      if (!checkStatus || data.code == 200) {
+      if (!checkStatus || data.errorCode == 200) {
         return data
       } else {
         return Promise.reject(data)
@@ -83,11 +93,11 @@ declare global {
    */
   interface RequestRes {
     /** 状态码,成功返回 200 */
-    code: number
+    errorCode: number
     /** 错误消息 */
-    message: string
+    errorMessage: string
     /** 返回数据 */
-    data: any
+    response: any
   }
 
   /**

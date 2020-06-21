@@ -2,8 +2,11 @@
  * 定义本地存储模型
  */
 
+/** 授权token */
+export const token = ''
+
 /** 开发项目信息 */
-export const projects: Projects = {
+export const projects = {
   admin: {
     path: '',
   },
@@ -18,7 +21,9 @@ export const projects: Projects = {
 /** - interface - split ------------------------------------------------------------------- */
 
 declare global {
-  type ProjectNames = 'admin' | 'zapp' | '小程序'
+  type token = string
+
+  type ProjectNames = keyof typeof projects
   type Projects = {
     [key in ProjectNames]: { path: string }
   }

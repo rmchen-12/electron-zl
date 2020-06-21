@@ -5,7 +5,7 @@ import globby from 'globby'
 
 import './new-project.less'
 
-import { AdminFlow, ZAppFlow } from './workflow'
+import { ZAppFlow, AdminFlow } from './workflow'
 
 const { dialog } = remote
 

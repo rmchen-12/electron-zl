@@ -2,7 +2,7 @@
 
 安装 `yarn | cnpm i`
 
-启动调试 `yarn start | npm start`
+启动调试 `yarn run dev | npm run dev`
 
 ## 快速创建一个路由页面
 

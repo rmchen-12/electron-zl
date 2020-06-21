@@ -2,7 +2,6 @@ import React from 'react'
 import { Button, Timeline, Select, message, Form, Input } from 'antd'
 import { ValidateStatus } from 'antd/lib/form/FormItem'
 import execa from 'execa'
-import { padEnd } from 'lodash'
 
 const { Option } = Select
 const { Item } = Form

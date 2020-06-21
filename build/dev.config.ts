@@ -25,7 +25,7 @@ const devConfig = {
     dev: {
       variables: {
         API_PROTOCOL: 'http://',
-        API_HOST: '10.1.10.34:7001',
+        API_HOST: 'localhost:7001',
         API_BASE_PATH: '/',
       },
     },

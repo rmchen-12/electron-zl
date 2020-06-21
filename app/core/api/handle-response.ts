@@ -1,4 +1,6 @@
 import { Notification, BrowserWindow } from 'electron'
+import { createLoginWindow } from '@/electron/login'
+
 /**
  * 发生接口发生错误时的处理
  * 注意这是运行在主进程中的方法,请不要使用 document api
@@ -7,29 +9,24 @@ import { Notification, BrowserWindow } from 'electron'
  * @param options
  */
 export async function errorAction(err: any, sendData: any, options: RequestOptions) {
-  const { code, message } = err
+  const { errorCode, errorDescription } = err
   const { errorType } = options
 
-  $tools.log.error(`[request:${code}] [${errorType}]`, err)
+  $tools.log.error(`[request:${errorCode}] [${errorType}]`, err)
 
-  switch (code) {
-    // 跳转到未登录页
-    case 30000:
-      // ...
-      break
-
-    // 无权限跳转
-    case 30002:
-      // ...
+  switch (errorCode) {
+    // 无权限打开登录框
+    case 401:
+      createLoginWindow()
       break
 
     default:
-      const title = `Request Error: [${code}]`
+      const title = `Request Error: [${errorCode}]`
       if (errorType === 'notification') {
         const n = new Notification({
           icon: $tools.APP_ICON,
           title,
-          body: message,
+          body: errorDescription,
         })
         n.show()
       } else {
@@ -38,7 +35,7 @@ export async function errorAction(err: any, sendData: any, options: RequestOptio
           query: {
             type: 'error',
             title,
-            message,
+            errorDescription,
           },
         })
       }

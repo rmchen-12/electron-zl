@@ -1,14 +1,12 @@
 import React from 'react'
 import { remote } from 'electron'
 import { HashRouter as Router, Route, Switch, Redirect, RouteComponentProps } from 'react-router-dom'
-import { Provider } from 'react-redux'
 import { asyncImport } from '../async-import'
 import { beforeRouter } from './router-hooks'
 import * as pageResource from '@/src/page-resource'
 
 interface AppRouterProps {
   routes: Map<string, RouteConfig>
-  store: AppStore
 }
 
 interface AppRouterState {
@@ -40,18 +38,15 @@ export class AppRouter extends React.Component<AppRouterProps, AppRouterState> {
   }
 
   render() {
-    const { store } = this.props
     const { readyToClose } = this.state
     if (readyToClose) return null
     return (
-      <Provider store={store}>
-        <Router>
-          <Switch>
-            {this.routeElements}
-            {this.noMatch ?? null}
-          </Switch>
-        </Router>
-      </Provider>
+      <Router>
+        <Switch>
+          {this.routeElements}
+          {this.noMatch ?? null}
+        </Switch>
+      </Router>
     )
   }
 

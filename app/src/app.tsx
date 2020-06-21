@@ -1,23 +1,41 @@
 import * as React from 'react'
+import { ipcRenderer } from 'electron'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'
+import { withStore } from '@/src/components/with-store'
 
 import { AppRouter, AppLayout } from '@/src/components'
-
 import routes from './auto-routes'
 
-interface AppProps {
+interface AppProps extends StoreProps {
   createConfig: CreateConfig
 }
 
-export default class App extends React.Component<AppProps> {
+class App extends React.Component<AppProps> {
+  componentDidMount() {
+    this.getUserInfo()
+    ipcRenderer.on('gitLab-login-replay', (e, arg) => {
+      console.log(1)
+
+      this.getUserInfo()
+    })
+  }
+
+  getUserInfo = () => {
+    $api.getUserInfo({}, { method: 'GET' }).then((res) => {
+      this.props.dispatch({ type: 'ACTION_ADD_USER', data: res.response })
+    })
+  }
+
   render() {
     return (
       <ConfigProvider locale={zhCN}>
         <AppLayout createConfig={this.props.createConfig}>
-          <AppRouter routes={routes} store={$store} />
+          <AppRouter routes={routes} />
         </AppLayout>
       </ConfigProvider>
     )
   }
 }
+
+export default withStore(['user'])(App)
