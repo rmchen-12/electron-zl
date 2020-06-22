@@ -46,7 +46,6 @@ export const createLoginWindow = (url: string = $tools.APP_CALLBACK) => {
     if (details.responseHeaders) {
       const token: string[] = details.responseHeaders.token
       $db.read().set('token', token[0]).write()
-      $tools.log.error($db.read().get('token').value())
       loginWindow.webContents.send('gitLab-login-replay', token)
       loginWindow.close()
     } else {

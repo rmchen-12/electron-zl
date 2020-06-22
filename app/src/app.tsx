@@ -19,6 +19,11 @@ class App extends React.Component<AppProps> {
 
       this.getUserInfo()
     })
+    ipcRenderer.on('ping', (e, arg) => {
+     $tools.log.error(123)
+
+      // this.getUserInfo()
+    })
   }
 
   getUserInfo = () => {
