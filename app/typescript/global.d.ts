@@ -19,4 +19,6 @@ declare namespace NodeJS {
 
 declare module 'lodash-id'
 
+declare module 'react-responsive-masonry'
+
 declare const nodeRequire: NodeRequire

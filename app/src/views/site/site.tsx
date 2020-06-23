@@ -1,7 +1,8 @@
 import React from 'react'
-import { List, Card, Button } from 'antd'
-
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import './site.less'
+
+import { Item } from './item/index'
 
 declare interface SiteState {
   siteCategories: querySiteCategoriesUsingGET.Response['response']
@@ -21,30 +22,15 @@ export default class Site extends React.Component<PageProps, SiteState> {
   render() {
     const { siteCategories } = this.state
     return (
-      <List
-        className="p-20"
-        grid={{
-          gutter: 16,
-          xs: 1,
-          sm: 2,
-          md: 4,
-          lg: 4,
-          xl: 4,
-          xxl: 4,
-        }}
-        dataSource={siteCategories}
-        renderItem={(item: querySiteCategoriesUsingGET.SiteCategories) => (
-          <List.Item>
-            <Card title={item.category_name}>
-              <List
-                size="small"
-                dataSource={item.sites}
-                renderItem={(item) => <List.Item>{item.url}</List.Item>}
-              ></List>
-            </Card>
-          </List.Item>
-        )}
-      />
+      <div className="p-20" style={{ height: '100%' }}>
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1150: 5 }}>
+          <Masonry>
+            {siteCategories.map((category) => (
+              <Item key={category.id} category={category}></Item>
+            ))}
+          </Masonry>
+        </ResponsiveMasonry>
+      </div>
     )
   }
 } // class Site end

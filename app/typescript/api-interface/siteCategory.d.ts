@@ -1,13 +1,15 @@
 declare namespace querySiteCategoriesUsingGET {
-  interface site {
+  interface Site {
     [key: string]: string | number
     site_category_id: number
     url: string
+    id: number
   }
 
-  interface SiteCategories {
+  interface SiteCategory {
+    id: number
     category_name: string
-    sites: site[]
+    sites: Site[]
   }
 
   interface Params {}
@@ -15,7 +17,7 @@ declare namespace querySiteCategoriesUsingGET {
   interface Response {
     errorCode: number
     errorDescription: string
-    response: SiteCategories[]
+    response: SiteCategory[]
   }
 }
 

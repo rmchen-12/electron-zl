@@ -87,5 +87,8 @@
   "bugs": {
     "url": "https://github.com/rmchen-12/electron-zl/issues"
   },
-  "homepage": "https://github.com/rmchen-12/electron-zl#readme"
+  "homepage": "https://github.com/rmchen-12/electron-zl#readme",
+  "dependencies": {
+    "react-responsive-masonry": "^2.1.0"
+  }
 }
