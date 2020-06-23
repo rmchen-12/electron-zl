@@ -3,7 +3,7 @@
  */
 
 /**
- * 查询npm-auth规则
+ * 查询用户信息
  * @param params
  * @param options
  */

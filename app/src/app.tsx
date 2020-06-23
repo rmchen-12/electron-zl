@@ -15,13 +15,10 @@ class App extends React.Component<AppProps> {
   componentDidMount() {
     this.getUserInfo()
     ipcRenderer.on('gitLab-login-replay', (e, arg) => {
-      console.log(1)
-
       this.getUserInfo()
     })
     ipcRenderer.on('ping', (e, arg) => {
-     $tools.log.error(123)
-
+      $tools.log.error(123)
       // this.getUserInfo()
     })
   }
