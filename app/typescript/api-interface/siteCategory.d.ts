@@ -1,15 +1,8 @@
 declare namespace querySiteCategoriesUsingGET {
-  interface Site {
-    [key: string]: string | number
-    site_category_id: number
-    url: string
-    id: number
-  }
-
   interface SiteCategory {
     id: number
-    category_name: string
-    sites: Site[]
+    sites: querySiteUsingGET.Site[]
+    categoryName: string | '请输入分类名称'
   }
 
   interface Params {}
@@ -23,16 +16,10 @@ declare namespace querySiteCategoriesUsingGET {
 
 declare namespace addSiteCategoryUsingPOST {
   interface Params {
-    config: object
+    categoryName: string
   }
 
-  interface Response {
-    code: number
-    msg: string
-    data: {
-      msg: string
-    }
-  }
+  type Response = querySiteCategoriesUsingGET.Response
 }
 
 declare namespace deleteSiteCategoryUsingDELETE {

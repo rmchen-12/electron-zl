@@ -3,10 +3,40 @@
 .site-item {
   margin-bottom: 10px;
 
-  .ri-close-line {
-    cursor: pointer;
-    &:hover {
+  .site-item_add {
+    opacity: 0;
+  }
+  &:hover {
+    .site-item_add {
+      opacity: 1;
+    }
+  }
+
+  &-row {
+    .ri-close-line,
+    .ri-pencil-line {
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.1s ease;
+    }
+    .ri-close-line:hover {
       color: @color_error;
+    }
+    .ri-pencil-line:hover {
+      color: @color_blue;
+    }
+    &:hover {
+      .ri-close-line,
+      .ri-pencil-line {
+        opacity: 1;
+      }
+    }
+
+    &-url {
+      &:hover {
+        transition: all 0.1s ease;
+        color: @color_primary;
+      }
     }
   }
 }

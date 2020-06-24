@@ -8,7 +8,7 @@ declare namespace getUserInfoUsingGET {
       username: string
       avatar: string
       email: string
-      register_at: string
+      registerAt: string
     }
   }
 }

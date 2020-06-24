@@ -4,7 +4,7 @@ const routes: RouteConfig[] = [
     path: '/',
     redirect: { to: '/demo?form=home' },
     windowOptions: {
-      title: 'zl-desktop',
+      title: 'swim',
       width: 1200,
       height: 800,
       minWidth: 800,
