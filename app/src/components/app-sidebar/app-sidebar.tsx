@@ -87,7 +87,7 @@ class AppSidebar1 extends React.Component<SidebarProps, State> {
   }
 
   logout = () => {
-    $db.read().set('token', '').write()
+    $db.set('token', '')
     this.props.dispatch({ type: 'ACTION_CLEAR_USER', data: {} })
   }
 

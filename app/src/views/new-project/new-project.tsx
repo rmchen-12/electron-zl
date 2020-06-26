@@ -1,158 +1,142 @@
 import React from 'react'
 import { remote } from 'electron'
-import { Space, PageHeader, Row, Col, Divider } from 'antd'
-import globby from 'globby'
-
+import { PageHeader, Button, Divider, Space, Modal, Form, Input } from 'antd'
+import { PlusOutlined, RobotOutlined } from '@ant-design/icons'
+import { FormInstance } from 'antd/lib/form'
+import { withStore } from '@/src/components'
 import './new-project.less'
 
-import { ZAppFlow, AdminFlow } from './workflow'
-
 const { dialog } = remote
-
-declare interface NewProjectState {
-  btnLoading: boolean
-  end: ProjectNames
-  projects: Projects
-  functionDirs: string[]
-  microDirs: string[]
-  microFunctionsDirs: string[]
-  zappDirs: string[]
+const layout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 16 },
 }
 
-export default class NewProject extends React.Component<PageProps, Readonly<NewProjectState>> {
+import { AdminProject, Template } from './components'
+
+interface NewProjectProps extends PageProps, StoreProps {
+  user: StoreStates['user']
+}
+
+declare interface NewProjectState {
+  workPath: string
+  modalVisible: boolean
+  templateTypes: queryTemplateTypeUsingGET.TemplateType[] | undefined
+}
+
+@withStore(['user'])
+export default class Test extends React.Component<NewProjectProps, NewProjectState> {
+  private formRef = React.createRef<FormInstance>()
+
   readonly state: NewProjectState = {
-    btnLoading: false,
-    end: 'admin',
-    projects: { admin: { path: '' }, zapp: { path: '' }, 小程序: { path: '' } },
-    functionDirs: [''],
-    microDirs: [''],
-    microFunctionsDirs: [''],
-    zappDirs: [''],
+    workPath: $db.get('workPath').rootPath || '',
+    modalVisible: false,
+    templateTypes: undefined,
   }
 
-  componentDidMount() {
-    this.setProjects()
+  async componentDidMount() {
+    this.queryTemplateType()
   }
 
-  openDir = (end: ProjectNames) => {
+  queryTemplateType = async () => {
+    const { response } = await $api.queryTemplateType({}, { method: 'GET' })
+    this.setState({ templateTypes: response })
+  }
+
+  selectPath = () => {
     dialog
       .showOpenDialog({ properties: ['openDirectory', 'createDirectory', 'promptToCreate'] })
       .then(({ canceled, filePaths }) => {
         if (!canceled) {
-          this.getDb().updateProjects(end, filePaths[0])
+          this.updateWorkPath(filePaths[0])
         }
       })
   }
 
-  handleEndChange = (value: ProjectNames) => this.setState({ end: value })
-
-  reset = () => this.setState({ end: 'admin' })
-
   render() {
-    const { functionDirs, microDirs, microFunctionsDirs, projects, zappDirs } = this.state
+    const { workPath, modalVisible, templateTypes } = this.state
+    const { user } = this.props
 
     return (
-      <div className="new-project">
-        <PageHeader ghost={false} title="新建项目" />
+      <div style={{ height: '100%' }}>
+        <PageHeader
+          ghost={false}
+          title="新建项目"
+          extra={
+            <Space>
+              {workPath ? (
+                <Space>
+                  工作目录：
+                  <Button type="text" onClick={this.selectPath}>
+                    {workPath}
+                  </Button>
+                </Space>
+              ) : (
+                <Button onClick={this.selectPath}>
+                  <RobotOutlined spin />
+                  请先选择工作目录
+                </Button>
+              )}
+              <Button onClick={this.showModal}>
+                <PlusOutlined />
+                增加模板分类
+              </Button>
+            </Space>
+          }
+        />
 
-        <div className="mt-20">
-          <Row>
-            <Col span="7">
-              <>
-                <Space direction="vertical" className="flex center-v mb-32">
-                  zapp
-                  <span>
-                    {projects.zapp.path === '' ? '还未设置工作目录，选择本地zapp目录' : projects.zapp.path}
-                  </span>
-                  <a onClick={() => this.openDir('zapp')}>选择工作目录</a>
-                </Space>
-                <ZAppFlow path={projects.zapp.path} zappDirs={zappDirs}></ZAppFlow>
-              </>
-            </Col>
-            <Col span="1">
-              <Divider type="vertical" style={{ height: '100%' }}></Divider>
-            </Col>
-            <Col span="8">
-              <>
-                <Space direction="vertical" className="flex center-v mb-32">
-                  admin
-                  <span>
-                    {projects.admin.path === ''
-                      ? '还未设置工作目录，选择本地admin目录(注意：是admin,不是ehome-admin)'
-                      : projects.admin.path}
-                  </span>
-                  <a onClick={() => this.openDir('admin')}>选择工作目录</a>
-                </Space>
-                <AdminFlow
-                  path={projects.admin.path}
-                  functionDirs={functionDirs}
-                  microDirs={microDirs}
-                  microFunctionsDirs={microFunctionsDirs}
-                ></AdminFlow>
-              </>
-            </Col>
-            <Col span="1">
-              <Divider type="vertical" style={{ height: '100%' }}></Divider>
-            </Col>
-            <Col span="7">小程序</Col>
-          </Row>
+        <div className="p-20">
+          <Divider>后台admin</Divider>
+          <AdminProject workPath={workPath}></AdminProject>
+
+          {templateTypes?.map((templateType) => (
+            <>
+              <Divider>{templateType.typeName}</Divider>
+              <Template
+                templateTypeId={templateType.id}
+                workPath={workPath}
+                templates={templateType.projectTemplates}
+                queryTemplateType={this.queryTemplateType}
+                user={user}
+              ></Template>
+            </>
+          ))}
         </div>
+
+        <Modal
+          title="新建模板分类"
+          centered
+          visible={modalVisible}
+          onOk={this.handleOk}
+          onCancel={this.hideModal}
+        >
+          <Form {...layout} name="basic" initialValues={{ remember: true }} ref={this.formRef}>
+            <Form.Item label="分类名称" name="typeName" rules={[{ required: true, message: '不能为空!' }]}>
+              <Input placeholder="请输入分类名称"></Input>
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     )
   }
 
-  submit = () => {}
-
-  setProjects = () => {
-    const projects = this.getDb().projects
-    this.setState({ projects }, () => {
-      this.readAdminDir()
-      this.readZAppDir()
-    })
+  updateWorkPath = (rootPath: string) => {
+    this.setState({ workPath: rootPath }, () => $db.set('workPath.rootPath', rootPath))
   }
 
-  getDb = () => {
-    const modelName = 'projects'
-    return {
-      projects: $db.read().get(modelName).value(),
-      updateProjects: (key: ProjectNames, path: string) => {
-        const workPath = `${modelName}.${key}.path`
-        $db.read().set(workPath, path).write()
-        this.setProjects()
-      },
-    }
+  showModal = () => {
+    this.setState({ modalVisible: true })
   }
 
-  readZAppDir = async () => {
-    const { path } = this.state.projects.zapp
-    const zappDirs = await globby('*', {
-      cwd: path,
-      onlyDirectories: true,
-      unique: true,
-    })
-
-    this.setState({ zappDirs })
+  hideModal = () => {
+    this.setState({ modalVisible: false })
   }
 
-  readAdminDir = async () => {
-    const { path } = this.state.projects.admin
-    const functionsPath = `${path}/src/functions`
-    const functionDirs = await globby('*', {
-      cwd: functionsPath,
-      onlyDirectories: true,
-      unique: true,
-    })
-    const microDirs = await globby('micro-*', {
-      cwd: functionsPath,
-      onlyDirectories: true,
-      unique: true,
-    })
-    const microFunctionsDirs = await globby('micro-*/*-*', {
-      cwd: functionsPath,
-      onlyDirectories: true,
-      unique: true,
-    })
-
-    this.setState({ functionDirs, microDirs, microFunctionsDirs })
+  handleOk = async () => {
+    const { user } = this.props
+    const values = await this.formRef.current?.validateFields()
+    await $api.addTemplateType({ ownerId: user.id, typeName: values?.typeName })
+    this.setState({ modalVisible: false })
+    this.queryTemplateType()
   }
 } // class About end

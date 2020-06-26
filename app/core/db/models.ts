@@ -5,6 +5,13 @@
 /** 授权token */
 export const token = ''
 
+/** 开发项目目录 */
+export const workPath = {
+  root: '',
+  adminPath: '',
+  zappPath: '',
+}
+
 /** 开发项目信息 */
 export const projects = {
   admin: {
@@ -22,6 +29,7 @@ export const projects = {
 
 declare global {
   type token = string
+  type workPath = string
 
   type ProjectNames = keyof typeof projects
   type Projects = {

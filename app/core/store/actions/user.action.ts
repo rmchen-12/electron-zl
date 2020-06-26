@@ -3,7 +3,7 @@ export const initialState = {
 }
 
 export function ACTION_ADD_USER(state: StoreStates, action: StoreAction<'ACTION_ADD_USER'>): { user: object } {
-  console.log({ state, action })
+  //   console.log({ state, action })
   return { user: { ...state.user, ...action.data } }
 }
 
@@ -11,7 +11,7 @@ export function ACTION_CLEAR_USER(
   state: StoreStates,
   action: StoreAction<'ACTION_CLEAR_USER'>
 ): { user: object } {
-  console.log({ state, action })
+  //   console.log({ state, action })
   return { user: {} }
 }
 

@@ -8,13 +8,16 @@ export const APP_NAME = app.name
 export const APP_VERSION = app.getVersion()
 
 /** 应用标题 */
-export const APP_TITLE = 'Electron Antd'
+export const APP_TITLE = 'Swim'
 
 /** 应用主图标 (桌面) */
 export const APP_ICON = asAssetsPath('app-icon/app-icon@256.png')
 
 /** gitLab登录地址 */
 export const APP_CALLBACK = 'http://localhost:7001/passport/gitlab/'
+
+/** gitLab ehome-admin地址 */
+export const GITLAB_EHOME_ADMIN = 'http://10.1.1.217/eh-front-end/ehome-admin/'
 
 /** 亮色风格托盘图标 标准尺寸 16*16, 系统会自动载入 @2x 和 @3x */
 export const TRAY_ICON_LIGHT = asAssetsPath('tray-icon/tray-icon-light.png')
@@ -35,9 +38,9 @@ export const DEFAULT_WINDOW_OPTIONS: BrowserWindowConstructorOptions = {
     nodeIntegration: true,
     scrollBounce: true,
   },
-  // titleBarStyle: 'hidden', // 隐藏标题栏, 但显示窗口控制按钮
-  // frame: process.platform === 'darwin' ? true : false, // 无边框窗口
-  // frame: false, // 无边框窗口
+  titleBarStyle: 'hidden', // 隐藏标题栏, 但显示窗口控制按钮
+  frame: process.platform === 'darwin' ? true : false, // 无边框窗口
+  //   frame: false, // 无边框窗口
   // skipTaskbar: false, // 是否在任务栏中隐藏窗口
   // backgroundColor: '#fff',
   // transparent: true, // 窗口是否透明

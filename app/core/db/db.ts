@@ -32,4 +32,31 @@ for (const [key, value] of Object.entries(Models)) {
   }
 }
 
-export const db = _db
+class Database {
+  _db: Datastore.LowdbSync<any>
+
+  constructor() {
+    const db = Datastore(adapter)
+    db._.mixin(LodashId)
+
+    /** 初始化模型数据 */
+    for (const [key, value] of Object.entries(Models)) {
+      if (!db.has(key).value()) {
+        db.set(key, value).write()
+      }
+    }
+    this._db = db
+  }
+
+  get(modelName: ModelNames) {
+    return this._db.read().get(modelName).value()
+  }
+
+  set(modelName: ModelNames | any, pathValue: string) {
+    return this._db.read().set(modelName, pathValue).write()
+  }
+}
+
+export const db = new Database()
+
+/** - interface - split ------------------------------------------------------------------- */

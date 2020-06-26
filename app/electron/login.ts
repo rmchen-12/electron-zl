@@ -11,8 +11,7 @@ ipcMain.on('gitLab-login', (event, data) => {
   session.defaultSession.webRequest.onCompleted({ urls: [callbackURL] }, (details) => {
     if (details.responseHeaders) {
       const token: string[] = details.responseHeaders.token
-      $db.read().set('token', token[0]).write()
-      $tools.log.error($db.read().get('token').value())
+      $db.set('token', token[0])
       event.sender.send('gitLab-login-replay', token)
       loginWindow.close()
     } else {
@@ -45,7 +44,7 @@ export const createLoginWindow = (url: string = $tools.APP_CALLBACK) => {
   session.defaultSession.webRequest.onCompleted({ urls: [callbackURL] }, (details) => {
     if (details.responseHeaders) {
       const token: string[] = details.responseHeaders.token
-      $db.read().set('token', token[0]).write()
+      $db.set('token', token[0])
       loginWindow.webContents.send('gitLab-login-replay', token)
       loginWindow.close()
     } else {

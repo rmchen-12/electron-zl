@@ -1,20 +1,20 @@
 /**
  * 格式化日期
  * @param d
- * @param format 'YYYY-MM-DD H:I:S.MS'
+ * @param format 'YYYY-MM-DD hh:mm:ss:ms'
  */
-export function formatDate(date: Date = new Date(), format = 'YYYY-MM-DD H:I:S.MS') {
+export function formatDate(date: Date = new Date(), format = 'YYYY-MM-DD hh:mm:ss:ms') {
   const obj = {
     YYYY: fixedStringLength(date.getFullYear(), 4),
     MM: fixedStringLength(date.getMonth() + 1, 2),
     DD: fixedStringLength(date.getDate(), 2),
-    H: fixedStringLength(date.getHours(), 2),
-    I: fixedStringLength(date.getMinutes(), 2),
-    S: fixedStringLength(date.getSeconds(), 2),
-    MS: fixedStringLength(date.getMilliseconds(), 3),
+    hh: fixedStringLength(date.getHours(), 2),
+    mm: fixedStringLength(date.getMinutes(), 2),
+    ss: fixedStringLength(date.getSeconds(), 2),
+    ms: fixedStringLength(date.getMilliseconds(), 3),
   }
 
-  return format.replace(/(YYYY|MM|DD|H|I|S|MS)/g, (_, $1) => {
+  return format.replace(/(YYYY|MM|DD|hh|mm|ss|ms)/g, (_, $1) => {
     return obj[$1]
   })
 }

@@ -37,7 +37,7 @@ export async function request(
   withToken = true
 ) {
   if (withToken) {
-    const token = $db.read().get('token').value()
+    const token = $db.get('token')
     DEFAULT_CONFIG.headers['Authorization'] = `Bearer ${token}`
   }
   const options: RequestOptions = Object.assign({}, DEFAULT_CONFIG, optionsSource)

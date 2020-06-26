@@ -4,6 +4,7 @@ async function startApp() {
   await initMain()
   await import('./main')
   await import('./login')
+  await import('./ipc')
 }
 
 startApp()

@@ -73,7 +73,7 @@ export class Item extends React.Component<ItemProps, ItemState> {
   addCategory = () => {
     const { categoryName } = this.state
     const { querySiteCategories } = this.props
-    $api.addSiteCategory({ categoryName }).then((res) => {
+    $api.addSiteCategory({ categoryName }).then(() => {
       querySiteCategories()
     })
   }

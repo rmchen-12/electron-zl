@@ -3,7 +3,7 @@ const routes: RouteConfig[] = [
     key: 'NewProject',
     path: '/new-project',
     windowOptions: {
-      title: 'NewProject',
+      title: 'Test',
       resizable: false,
       minimizable: false,
       maximizable: false,

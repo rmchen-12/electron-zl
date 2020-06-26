@@ -100,6 +100,7 @@ export function createWindow(key: RouterKey, options: CreateWindowOptions = {}):
           win.show()
         }
       }
+
       resolve(win)
     })
 
@@ -117,6 +118,10 @@ export function createWindow(key: RouterKey, options: CreateWindowOptions = {}):
       }
       windowList.delete(key)
       log.info(`Window <${key}:${win.id}> is closed.`)
+    })
+
+    $tools.emitter.on('data', (log) => {
+      win.webContents.send('terminal-log', log)
     })
   })
 }
@@ -141,6 +146,9 @@ declare global {
     interface WebContents {
       /** 自定义事件: DOM 准备就绪 */
       send(channel: 'dom-ready', createConfig: CreateConfig): void
+      send(channel: 'terminal-log', log: string): void
+      send(channel: 'terminal-open'): void
+      send(channel: 'terminal-close', timer?: number): void
     }
   }
 }
