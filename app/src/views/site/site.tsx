@@ -41,7 +41,7 @@ export default class Site extends React.Component<PageProps, SiteState> {
         />
 
         <div className="p-20">
-          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 4, 1150: 5 }}>
+          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 3, 750: 4, 900: 4, 1150: 5 }}>
             <Masonry>
               {siteCategories.map((category) => (
                 <Item

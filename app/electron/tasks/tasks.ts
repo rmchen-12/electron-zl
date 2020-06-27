@@ -1,6 +1,6 @@
 /**
- * 可以复用的任务操作可以放在这里
- * * 两种模式，只需要结果的用execCmd，需要实时输出日志的execCmdWithNotify
+ * 任务操作可以放在这里，在ipc.ts文件中组合调用
+ * 两种模式，只需要结果的用execCmd，需要实时输出日志的execCmdWithNotify
  *  - $tools.execCmdWithNotify
  *    监听buffer流，自动实时输出日志，不需要手动控制，需要监听emitter来关闭terminal
  *  - $tools.execCmd

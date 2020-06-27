@@ -1,0 +1,44 @@
+[
+  {
+    "key": "WorkBench",
+    "href": "#/",
+    "title": "工作台",
+    "icon": "home-3",
+    "accessLevel": 300
+  },
+  {
+    "key": "NewProject",
+    "href": "#/new-project",
+    "title": "项目模板",
+    "icon": "bug",
+    "accessLevel": 300
+  },
+  {
+    "key": "Site",
+    "href": "#/site",
+    "title": "文档链接",
+    "icon": "run",
+    "accessLevel": 300
+  },
+  {
+    "key": "LogViewer",
+    "href": "#/log-viewer",
+    "title": "日志",
+    "icon": "terminal-box",
+    "accessLevel": 300
+  },
+  {
+    "key": "NpmAuth",
+    "href": "#/npm-auth",
+    "title": "npm管理",
+    "icon": "lock",
+    "accessLevel": 600
+  },
+  {
+    "key": "Administrator",
+    "href": "#/administrator",
+    "title": "管理",
+    "icon": "vip-crown",
+    "accessLevel": 500
+  }
+]

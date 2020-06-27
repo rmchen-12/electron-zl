@@ -1,7 +1,7 @@
 import React from 'react'
 import { remote } from 'electron'
-import { PageHeader, Button, Divider, Space, Modal, Form, Input } from 'antd'
-import { PlusOutlined, RobotOutlined } from '@ant-design/icons'
+import { PageHeader, Button, Divider, Modal, Form, Input } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 import { FormInstance } from 'antd/lib/form'
 import { withStore } from '@/src/components'
 import './new-project.less'
@@ -43,16 +43,6 @@ export default class Test extends React.Component<NewProjectProps, NewProjectSta
     this.setState({ templateTypes: response })
   }
 
-  selectPath = () => {
-    dialog
-      .showOpenDialog({ properties: ['openDirectory', 'createDirectory', 'promptToCreate'] })
-      .then(({ canceled, filePaths }) => {
-        if (!canceled) {
-          this.updateWorkPath(filePaths[0])
-        }
-      })
-  }
-
   render() {
     const { workPath, modalVisible, templateTypes } = this.state
     const { user } = this.props
@@ -63,25 +53,10 @@ export default class Test extends React.Component<NewProjectProps, NewProjectSta
           ghost={false}
           title="新建项目"
           extra={
-            <Space>
-              {workPath ? (
-                <Space>
-                  工作目录：
-                  <Button type="text" onClick={this.selectPath}>
-                    {workPath}
-                  </Button>
-                </Space>
-              ) : (
-                <Button onClick={this.selectPath}>
-                  <RobotOutlined spin />
-                  请先选择工作目录
-                </Button>
-              )}
-              <Button onClick={this.showModal}>
-                <PlusOutlined />
-                增加模板分类
-              </Button>
-            </Space>
+            <Button onClick={this.showModal}>
+              <PlusOutlined />
+              增加模板分类
+            </Button>
           }
         />
 
@@ -118,10 +93,6 @@ export default class Test extends React.Component<NewProjectProps, NewProjectSta
         </Modal>
       </div>
     )
-  }
-
-  updateWorkPath = (rootPath: string) => {
-    this.setState({ workPath: rootPath }, () => $db.set('workPath.rootPath', rootPath))
   }
 
   showModal = () => {

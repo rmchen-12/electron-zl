@@ -23,29 +23,13 @@ declare namespace addSiteCategoryUsingPOST {
 }
 
 declare namespace deleteSiteCategoryUsingDELETE {
-  interface Params {
-    config: object
-  }
+  interface Params {}
 
-  interface Response {
-    code: number
-    msg: string
-    data: {
-      msg: string
-    }
-  }
+  type Response = querySiteCategoriesUsingGET.SiteCategory
 }
 
 declare namespace updateSiteCategoryUsingPUT {
-  interface Params {
-    config: object
-  }
+  interface Params {}
 
-  interface Response {
-    code: number
-    msg: string
-    data: {
-      msg: string
-    }
-  }
+  type Response = querySiteCategoriesUsingGET.SiteCategory
 }

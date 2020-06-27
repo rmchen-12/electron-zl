@@ -7,32 +7,18 @@ export const token = ''
 
 /** 开发项目目录 */
 export const workPath = {
-  root: '',
+  rootPath: '',
   adminPath: '',
   zappPath: '',
-}
 
-/** 开发项目信息 */
-export const projects = {
-  admin: {
-    path: '',
-  },
-  zapp: {
-    path: '',
-  },
-  小程序: {
-    path: '',
-  },
+  /** 其他单个项目路径 */
+  // xxx1: '',
+  // xxx2: ''
 }
 
 /** - interface - split ------------------------------------------------------------------- */
 
 declare global {
   type token = string
-  type workPath = string
-
-  type ProjectNames = keyof typeof projects
-  type Projects = {
-    [key in ProjectNames]: { path: string }
-  }
+  type workPath = typeof workPath
 }

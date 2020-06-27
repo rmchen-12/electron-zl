@@ -1,9 +1,9 @@
 const routes: RouteConfig[] = [
   {
-    key: 'NewProject',
-    path: '/new-project',
+    key: 'Administrator',
+    path: '/administrator',
     windowOptions: {
-      title: 'NewProject',
+      title: 'Administrator',
       resizable: false,
       minimizable: false,
       maximizable: false,

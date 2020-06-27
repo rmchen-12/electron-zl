@@ -2,7 +2,7 @@ const routes: RouteConfig[] = [
   {
     key: 'Home',
     path: '/',
-    redirect: { to: '/demo?form=home' },
+    redirect: { to: '/work-bench?form=home' },
     windowOptions: {
       title: 'swim',
       width: 1200,

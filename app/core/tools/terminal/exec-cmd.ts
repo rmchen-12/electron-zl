@@ -1,5 +1,4 @@
 import { spawn, SpawnOptionsWithoutStdio } from 'child_process'
-import { ipcMain } from 'electron'
 
 /**
  * promise化执行cdm命令，返回最后结果

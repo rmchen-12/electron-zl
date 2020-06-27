@@ -24,29 +24,13 @@ declare namespace addTemplateTypeUsingPOST {
 }
 
 declare namespace deleteTemplateTypeUsingDELETE {
-  interface Params {
-    config: object
-  }
+  interface Params {}
 
-  interface Response {
-    code: number
-    msg: string
-    data: {
-      msg: string
-    }
-  }
+  type Response = queryTemplateTypeUsingGET.TemplateType
 }
 
 declare namespace updateTemplateTypeUsingPUT {
-  interface Params {
-    config: object
-  }
+  interface Params {}
 
-  interface Response {
-    code: number
-    msg: string
-    data: {
-      msg: string
-    }
-  }
+  type Response = queryTemplateTypeUsingGET.TemplateType
 }

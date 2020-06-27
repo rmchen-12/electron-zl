@@ -28,24 +28,28 @@ export function addSiteCategory(
 
 /**
  * 删除一条分类
+ * @param id
  * @param params
  * @param options
  */
 export function deleteSiteCategory(
+  id: number,
   params?: deleteSiteCategoryUsingDELETE.Params,
   options?: RequestOptions
 ): Promise<deleteSiteCategoryUsingDELETE.Response> {
-  return $api.request('/siteCategories', params, options)
+  return $api.request(`/siteCategories/${id}`, params, options)
 }
 
 /**
  * 更新一条分类信息
+ * @param id
  * @param params
  * @param options
  */
 export function updateSiteCategory(
+  id: number,
   params?: updateSiteCategoryUsingPUT.Params,
   options?: RequestOptions
 ): Promise<updateSiteCategoryUsingPUT.Response> {
-  return $api.request('/siteCategories', params, options)
+  return $api.request(`/siteCategories/${id}`, params, options)
 }

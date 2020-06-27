@@ -48,15 +48,30 @@ class Database {
     this._db = db
   }
 
-  get(modelName: ModelNames) {
+  get: Get = (modelName = 'token') => {
     return this._db.read().get(modelName).value()
   }
 
-  set(modelName: ModelNames | any, pathValue: string) {
-    return this._db.read().set(modelName, pathValue).write()
+  set: Set = (path = 'token', pathValue = '') => {
+    return this._db.read().set(path, pathValue).write()
   }
 }
 
 export const db = new Database()
 
 /** - interface - split ------------------------------------------------------------------- */
+
+/** 定义get函数重载 */
+interface Get {
+  (modelName: 'token'): typeof Models['token']
+  (modelName: 'workPath'): typeof Models['workPath']
+}
+
+/** 定义set函数重载 */
+interface Set {
+  (path: 'token', pathValue: string): void & Promise<void>
+  (path: 'workPath.rootPath', pathValue: string): void & Promise<void>
+  (path: 'workPath.adminPath', pathValue: string): void & Promise<void>
+  (path: 'workPath.zappPath', pathValue: string): void & Promise<void>
+  (path: string, pathValue: string): void & Promise<void>
+}

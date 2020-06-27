@@ -32,10 +32,11 @@ export function addTemplateType(
  * @param options
  */
 export function deleteTemplateType(
+  id: number,
   params?: deleteTemplateTypeUsingDELETE.Params,
   options?: RequestOptions
 ): Promise<deleteTemplateTypeUsingDELETE.Response> {
-  return $api.request('/templateTypes', params, options)
+  return $api.request(`/templateTypes/${id}`, params, options)
 }
 
 /**
@@ -44,8 +45,9 @@ export function deleteTemplateType(
  * @param options
  */
 export function updateTemplateType(
+  id: number,
   params?: updateTemplateTypeUsingPUT.Params,
   options?: RequestOptions
 ): Promise<updateTemplateTypeUsingPUT.Response> {
-  return $api.request('/templateTypes', params, options)
+  return $api.request(`/templateTypes/${id}`, params, options)
 }

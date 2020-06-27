@@ -13,6 +13,7 @@ declare interface ItemRowProps {
   site: querySiteUsingGET.Site
   categoryId: number
   querySiteCategories: () => void
+  cancel: () => void
 }
 
 const layout = {
@@ -28,7 +29,7 @@ export class ItemRow extends React.Component<ItemRowProps, ItemRowState> {
   }
 
   render() {
-    const { site } = this.props
+    const { site, cancel } = this.props
     const { type, url, description } = this.state
     return (
       <div className="site-item-row flex between pr-20" key={site.id}>
@@ -42,7 +43,6 @@ export class ItemRow extends React.Component<ItemRowProps, ItemRowState> {
               <span className="text-ellipsis text-primary" style={{ minWidth: 80 }}>
                 {description}
               </span>
-              (<span className="text-ellipsis">{url}</span>)
             </div>
             <div>
               <i className="ri-pencil-line" onClick={this.editRow}></i>
@@ -59,7 +59,7 @@ export class ItemRow extends React.Component<ItemRowProps, ItemRowState> {
               initialValue={description}
               rules={[{ required: true, message: 'description' }]}
             >
-              <Input placeholder="描述" />
+              <Input placeholder="描述" autoFocus />
             </Form.Item>
 
             <Form.Item
@@ -74,14 +74,27 @@ export class ItemRow extends React.Component<ItemRowProps, ItemRowState> {
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit">
-                确定
+              <Button type="text" size="small" htmlType="submit">
+                ok
+              </Button>
+              <Button type="text" size="small" onClick={this.onCancel}>
+                cancel
               </Button>
             </Form.Item>
           </Form>
         )}
       </div>
     )
+  }
+
+  onCancel = () => {
+    const { cancel } = this.props
+    const { type } = this.state
+    if (type === 'add') {
+      cancel()
+      return
+    }
+    this.setState({ type: 'view' })
   }
 
   editRow = () => this.setState({ type: 'edit' })

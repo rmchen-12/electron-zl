@@ -1,13 +1,7 @@
 import React, { Component } from 'react'
 import { shell } from 'electron'
 import { Card, Row, Col, Space, Modal } from 'antd'
-import {
-  EditOutlined,
-  PlusCircleFilled,
-  ChromeOutlined,
-  DeleteOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons'
+import { EditOutlined, ChromeOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { FormInstance } from 'antd/lib/form'
 import compact from 'lodash/compact'
 
@@ -81,12 +75,16 @@ export class Template extends Component<TemplateProjectProps, TemplateState> {
             </Col>
           ))}
           <Col md={12} lg={8} xl={6}>
-            <Card hoverable type="inner" onClick={this.showAddModal}>
-              <Space>
-                <PlusCircleFilled />
-                加个模板
-              </Space>
-            </Card>
+            <Space direction="vertical">
+              <Card hoverable type="inner" onClick={this.showAddModal}>
+                加个模板吧 (≧﹏ ≦)
+              </Card>
+              {Number(user.accessLevel) >= 400 && (
+                <Card hoverable type="inner" onClick={this.deleteTemplateType}>
+                  <span className="text-error">这个分类不要了 (╯▔皿▔)╯</span>
+                </Card>
+              )}
+            </Space>
           </Col>
         </Row>
 
@@ -108,14 +106,31 @@ export class Template extends Component<TemplateProjectProps, TemplateState> {
     this.setState({ addModalVisible: true, currentTemplate: template, operateType: 'edit' })
   }
 
+  deleteTemplateType = () => {
+    const { queryTemplateType, templateTypeId } = this.props
+    confirm({
+      title: '确定删除该模板分类吗?',
+      icon: <ExclamationCircleOutlined />,
+      okText: '死吧',
+      okType: 'danger',
+      cancelText: '留下',
+      centered: true,
+      onOk() {
+        $api.deleteTemplateType(templateTypeId, {}, { method: 'DELETE' }).then(() => {
+          queryTemplateType()
+        })
+      },
+    })
+  }
+
   delete = (id: number) => {
     const { queryTemplateType } = this.props
     confirm({
       title: '确定删除该模板吗?',
       icon: <ExclamationCircleOutlined />,
-      okText: 'Yes',
+      okText: '死吧',
       okType: 'danger',
-      cancelText: 'No',
+      cancelText: '留下',
       centered: true,
       onOk() {
         $api.deleteProjectTemplate(id, {}, { method: 'DELETE' }).then(() => {
