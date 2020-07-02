@@ -3,33 +3,37 @@
 .site-item {
   margin: 10px;
 
-  .site-item_add,
-  .site-item_delete {
-    opacity: 0;
-  }
-  &:hover {
-    .site-item_add,
-    .site-item_delete {
-      opacity: 1;
-    }
-  }
-
   &-row {
     .ri-close-line,
-    .ri-pencil-line {
+    .ri-pencil-line,
+    .ri-magic-line,
+    .ri-magic-fill {
       cursor: pointer;
       opacity: 0;
+      padding-left: 8px;
       transition: all 0.1s ease;
     }
     .ri-close-line:hover {
-      color: @color_error;
+      transform: scale(1.5);
+      color: @color_yellow;
     }
     .ri-pencil-line:hover {
+      transform: scale(1.5);
+      color: @color_green;
+    }
+    .ri-magic-line:hover {
+      transform: scale(1.5);
       color: @color_blue;
+    }
+    .ri-magic-fill:hover {
+      transform: scale(1.5);
+      color: @color_red;
     }
     &:hover {
       .ri-close-line,
-      .ri-pencil-line {
+      .ri-pencil-line,
+      .ri-magic-line,
+      .ri-magic-fill {
         opacity: 1;
       }
     }

@@ -24,7 +24,7 @@ export class NormalModal extends Component<NormalModalProps, NormalModalState> {
   formRef = React.createRef<FormInstance>()
 
   readonly state: NormalModalState = {
-    currentWorkPath: $db.get('workPath').adminPath || '',
+    currentWorkPath: $db.get('workPaths').adminPath || '',
     functionDirs: [''],
   }
 
@@ -82,7 +82,7 @@ export class NormalModal extends Component<NormalModalProps, NormalModalState> {
       return message.error('当前路径不准确，请选择admin目录')
     }
 
-    $db.set('workPath.adminPath', currentWorkPath)
+    $db.set('workPaths.adminPath', currentWorkPath)
     const functionDirs = await globby('*', {
       cwd: functionsPath,
       onlyDirectories: true,

@@ -28,7 +28,7 @@ export class MicroModal extends Component<MicroModalProps, MicroModalState> {
   formRef = React.createRef<FormInstance>()
 
   readonly state: MicroModalState = {
-    currentWorkPath: $db.get('workPath').adminPath || '',
+    currentWorkPath: $db.get('workPaths').adminPath || '',
     isExist: true,
     functionDirs: [''],
     microDirs: [''],
@@ -132,7 +132,7 @@ export class MicroModal extends Component<MicroModalProps, MicroModalState> {
       return message.error('当前路径不准确，请选择admin目录')
     }
 
-    $db.set('workPath.adminPath', currentWorkPath)
+    $db.set('workPaths.adminPath', currentWorkPath)
     const functionDirs = await globby('*', {
       cwd: functionsPath,
       onlyDirectories: true,

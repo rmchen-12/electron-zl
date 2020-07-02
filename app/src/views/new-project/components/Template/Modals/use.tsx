@@ -24,7 +24,7 @@ export class UseModal extends Component<UseModalProps, UseModalState> {
   formRef = React.createRef<FormInstance>()
 
   readonly state: UseModalState = {
-    currentWorkPath: $db.get('workPath').rootPath || '',
+    currentWorkPath: $db.get('workPaths').rootPath || '',
     functionDirs: [''],
   }
 

@@ -86,3 +86,12 @@ export function toSearch(obj: AnyObj): string {
   })
   return '?' + arr.join('&')
 }
+
+/** 对象转对象数组 */
+export function obj2arr(obj: AnyObj): object[] {
+  const arr = []
+  for (const [key, value] of Object.entries(obj)) {
+    arr.push({ [key]: value })
+  }
+  return arr
+}

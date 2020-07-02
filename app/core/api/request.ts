@@ -92,7 +92,7 @@ declare global {
    * 网络请求返回值
    */
   interface RequestRes {
-    /** 状态码,成功返回 200 */
+    /** 状态码,成功返回 200，无权限返回401 */
     errorCode: number
     /** 错误消息 */
     errorMessage: string
@@ -104,7 +104,7 @@ declare global {
    * 请求选项
    */
   interface RequestOptions {
-    /** 请求类型: [POST | GET] 默认: POST */
+    /** 请求类型: 增删改查restful风格，复杂操作[GET | POST] 默认: POST */
     method?: 'GET' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'POST' | 'PUT' | 'PATCH'
     /** 基本 url, 没有特殊需求无需传递 */
     baseUrl?: string

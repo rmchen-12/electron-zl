@@ -19,17 +19,17 @@ interface NewProjectProps extends PageProps, StoreProps {
 }
 
 declare interface NewProjectState {
-  workPath: string
+  rootPath: string
   modalVisible: boolean
   templateTypes: queryTemplateTypeUsingGET.TemplateType[] | undefined
 }
 
 @withStore(['user'])
-export default class Test extends React.Component<NewProjectProps, NewProjectState> {
+export default class NewProject extends React.Component<NewProjectProps, NewProjectState> {
   private formRef = React.createRef<FormInstance>()
 
   readonly state: NewProjectState = {
-    workPath: $db.get('workPath').rootPath || '',
+    rootPath: $db.get('workPaths').rootPath || '',
     modalVisible: false,
     templateTypes: undefined,
   }
@@ -44,7 +44,7 @@ export default class Test extends React.Component<NewProjectProps, NewProjectSta
   }
 
   render() {
-    const { workPath, modalVisible, templateTypes } = this.state
+    const { rootPath, modalVisible, templateTypes } = this.state
     const { user } = this.props
 
     return (
@@ -62,19 +62,19 @@ export default class Test extends React.Component<NewProjectProps, NewProjectSta
 
         <div className="p-20">
           <Divider>后台admin</Divider>
-          <AdminProject workPath={workPath}></AdminProject>
+          <AdminProject workPath={rootPath}></AdminProject>
 
           {templateTypes?.map((templateType) => (
-            <>
+            <div key={templateType.id}>
               <Divider>{templateType.typeName}</Divider>
               <Template
                 templateTypeId={templateType.id}
-                workPath={workPath}
+                workPath={rootPath}
                 templates={templateType.projectTemplates}
                 queryTemplateType={this.queryTemplateType}
                 user={user}
               ></Template>
-            </>
+            </div>
           ))}
         </div>
 

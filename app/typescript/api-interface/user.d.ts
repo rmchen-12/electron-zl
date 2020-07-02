@@ -1,10 +1,12 @@
 declare namespace getUserInfoUsingGET {
+  type accessLevel = '100' | '200' | '300' | '400' | '500'
+
   interface User {
     id: number
     businessLineId: number
     username: string
     displayName: string
-    accessLevel: string
+    accessLevel: accessLevel
     avatar: string
     email: string
     registerAt: string

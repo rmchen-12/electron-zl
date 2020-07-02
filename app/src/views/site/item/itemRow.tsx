@@ -7,6 +7,7 @@ declare interface ItemRowState {
   type: 'view' | 'edit' | 'add'
   url: string
   description: string
+  star: boolean
 }
 
 declare interface ItemRowProps {
@@ -26,29 +27,32 @@ export class ItemRow extends React.Component<ItemRowProps, ItemRowState> {
     type: !this.props.site.url ? 'add' : 'view',
     url: this.props.site.url,
     description: this.props.site.description,
+    star: Reflect.has($db.get('sites'), this.props.site.description),
   }
 
   render() {
-    const { site, cancel } = this.props
-    const { type, url, description } = this.state
+    const { site } = this.props
+    const { type, url, description, star } = this.state
+
     return (
-      <div className="site-item-row flex between pr-20" key={site.id}>
+      <div className="site-item-row" key={site.id}>
         {type === 'view' ? (
-          <>
-            <div
-              className="pointer site-item-row-url flex center-v"
-              style={{ width: '80%' }}
-              onClick={() => shell.openExternal(url)}
-            >
-              <span className="text-ellipsis text-primary" style={{ minWidth: 80 }}>
+          <div className="flex center-v between">
+            <div className="site-item-row-url" onClick={() => shell.openExternal(url)}>
+              <span className="text-ellipsis text-info" style={{ minWidth: 80 }}>
                 {description}
               </span>
             </div>
             <div>
+              {star ? (
+                <i className="ri-magic-fill" onClick={this.save}></i>
+              ) : (
+                <i className="ri-magic-line" onClick={this.save}></i>
+              )}
               <i className="ri-pencil-line" onClick={this.editRow}></i>
               <i className="ri-close-line" onClick={this.delRow}></i>
             </div>
-          </>
+          </div>
         ) : (
           <Form {...layout} name="basic" onFinish={this.onFormFinish} size="small">
             <Form.Item
@@ -85,6 +89,18 @@ export class ItemRow extends React.Component<ItemRowProps, ItemRowState> {
         )}
       </div>
     )
+  }
+
+  save = () => {
+    const { site } = this.props
+    const sites = $db.get('sites')
+    if (Reflect.has(sites, site.description)) {
+      $db.del(`sites.${site.description}`)
+      this.setState({ star: false })
+      return
+    }
+    $db.set(`sites.${site.description}`, site.url)
+    this.setState({ star: true })
   }
 
   onCancel = () => {

@@ -1,24 +1,30 @@
 import * as React from 'react'
-import { Layout, Statistic, Space, Divider } from 'antd'
+import { Layout, Statistic, Space, Divider, Row, Col, Avatar } from 'antd'
 import { withStore } from '@/src/components'
+import { compact, values } from 'lodash'
 import './work-bench.less'
+
 import Emoji from './emoji.json'
 
-import { MainContent } from './components'
+import { MainContent, SiderContent } from './components'
+import { npmPaths } from '@/core/db/models'
 
-const { Header, Sider, Content } = Layout
+const { Header, Content } = Layout
 
 interface WorkBenchProps extends PageProps, StoreProps {
   user: StoreStates['user']
+  npmPaths: StoreStates['npmPaths']
+  workPaths: StoreStates['workPaths']
+  businessLines: StoreStates['businessLines']
 }
 
 declare interface WorkBenchState {
   currentEmoji: string
 }
 
-@withStore(['user'])
+@withStore(['user', 'businessLines', 'workPaths', 'npmPaths'])
 export default class WorkBench extends React.Component<WorkBenchProps, WorkBenchState> {
-  private stats = ['拥有项目']
+  private stats = ['拥有项目', 'NPM包']
   private interval: NodeJS.Timeout | undefined
   private emoji = () => {
     const index = Math.floor(Math.random() * Emoji.length)
@@ -51,18 +57,18 @@ export default class WorkBench extends React.Component<WorkBenchProps, WorkBench
   }
 
   render() {
-    const { user } = this.props
+    const { user, workPaths } = this.props
     const { currentEmoji } = this.state
+
     return (
       <Layout className="work-bench">
         <Header className="work-bench-header flex center-v between">
-          <img className="work-bench-header-avatar" src={user.avatar} />
-          <div className="work-bench-header-greetings flex flex-1 column between">
-            <div className={'fs-16'}>
-              HI，{user.username}，{currentEmoji}
-            </div>
+          <div className="work-bench-header-greetings flex column between">
+            <div className={'fs-16'}>HI，{user.username}</div>
             <div className={'fs-12 text-gray'}>前端开发部 - {user.businessLine?.lineName} - FED</div>
           </div>
+          <div className="fs-16">{currentEmoji}</div>
+
           <div className={'work-bench-header-stat'}>
             <Space>
               {this.stats.map((stat, index) => (
@@ -70,7 +76,7 @@ export default class WorkBench extends React.Component<WorkBenchProps, WorkBench
                   <Statistic
                     title={<div className={'work-bench-header-stat-title'}>{stat}</div>}
                     valueStyle={{ fontSize: 20 }}
-                    value={93}
+                    value={compact(values(stat === '拥有项目' ? workPaths : npmPaths)).length}
                   />
                   {index !== this.stats.length - 1 && <Divider type="vertical"></Divider>}
                 </React.Fragment>
@@ -81,9 +87,15 @@ export default class WorkBench extends React.Component<WorkBenchProps, WorkBench
 
         <Layout>
           <Content>
-            <MainContent></MainContent>
+            <Row>
+              <Col xs={24} sm={24} md={24} lg={20}>
+                <MainContent></MainContent>
+              </Col>
+              <Col xs={0} sm={0} md={0} lg={4}>
+                <SiderContent></SiderContent>
+              </Col>
+            </Row>
           </Content>
-          <Sider theme="light">Sider</Sider>
         </Layout>
       </Layout>
     )

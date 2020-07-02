@@ -55,6 +55,10 @@ class Database {
   set: Set = (path = 'token', pathValue = '') => {
     return this._db.read().set(path, pathValue).write()
   }
+
+  del: Del = (path = 'token') => {
+    return this._db.read().unset(path).write()
+  }
 }
 
 export const db = new Database()
@@ -64,14 +68,22 @@ export const db = new Database()
 /** 定义get函数重载 */
 interface Get {
   (modelName: 'token'): typeof Models['token']
-  (modelName: 'workPath'): typeof Models['workPath']
+  (modelName: 'sites'): typeof Models['sites']
+  (modelName: 'workPaths'): typeof Models['workPaths']
+  (modelName: 'npmPaths'): typeof Models['npmPaths']
 }
 
 /** 定义set函数重载 */
 interface Set {
   (path: 'token', pathValue: string): void & Promise<void>
-  (path: 'workPath.rootPath', pathValue: string): void & Promise<void>
-  (path: 'workPath.adminPath', pathValue: string): void & Promise<void>
-  (path: 'workPath.zappPath', pathValue: string): void & Promise<void>
+  (path: 'sites', pathValue: string): void & Promise<void>
+  (path: 'npmPaths', pathValue: string): void & Promise<void>
+  (path: 'workPaths.rootPath', pathValue: string): void & Promise<void>
+  (path: 'workPaths.adminPath', pathValue: string): void & Promise<void>
+  (path: 'workPaths.zappPath', pathValue: string): void & Promise<void>
   (path: string, pathValue: string): void & Promise<void>
+}
+
+interface Del {
+  (path: string): (false & Promise<boolean>) | (true & Promise<boolean>)
 }

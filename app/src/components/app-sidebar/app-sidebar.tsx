@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tooltip } from 'antd'
 import { ipcRenderer } from 'electron'
-import { withStore } from '@/src/components/with-store'
+import { withStore, UserAvatar } from '@/src/components'
 import $c from 'classnames'
 
 import AppSideMenus from '@/src/side-menus.json'
@@ -44,7 +44,11 @@ class AppSidebar1 extends React.Component<SidebarProps, State> {
       <div className="app-sidebar flex column between">
         <div className="mt-32 flex  center app-sidebar-header">
           {user.avatar ? (
-            <img src={user.avatar} className={'side-avatar'} onClick={this.gitLabLogin} />
+            <UserAvatar
+              src={user.avatar}
+              accessLevel={user.accessLevel}
+              onClick={this.gitLabLogin}
+            ></UserAvatar>
           ) : (
             <Tooltip overlayClassName="side-menu-item-tooltip" placement="right" title={'点击登录'}>
               <i className="ri-gitlab-fill fs-30 text-error" onClick={this.gitLabLogin}></i>

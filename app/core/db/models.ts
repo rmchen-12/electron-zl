@@ -6,7 +6,7 @@
 export const token = ''
 
 /** 开发项目目录 */
-export const workPath = {
+export const workPaths = {
   rootPath: '',
   adminPath: '',
   zappPath: '',
@@ -16,9 +16,34 @@ export const workPath = {
   // xxx2: ''
 }
 
+/** 开发NPM目录 */
+export const npmPaths = {
+  // utils: d:/utils,
+  // xxx2: ''
+}
+
+/** 收藏的快捷导航 */
+export const sites = {
+  github: 'https://github.com/',
+  // xxx2: ''
+}
+
 /** - interface - split ------------------------------------------------------------------- */
 
 declare global {
+  interface WorkPaths {
+    rootPath: string
+    adminPath: string
+    zappPath: string
+    [key: string]: string
+  }
+  interface NpmPaths {
+    [key: string]: string
+  }
+  interface Sites {
+    [key: string]: string
+  }
+
   type token = string
-  type workPath = typeof workPath
+  type workPaths = WorkPaths
 }

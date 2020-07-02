@@ -9,13 +9,13 @@ const { dialog } = remote
 
 interface State {
   path: string
-  workPath: string
+  rootPath: string
 }
 
 export class AppTitlebar extends React.Component<{}, State> {
   state: State = {
     path: '',
-    workPath: $db.get('workPath').rootPath || '',
+    rootPath: $db.get('workPaths').rootPath || '',
   }
 
   componentDidMount() {
@@ -27,12 +27,12 @@ export class AppTitlebar extends React.Component<{}, State> {
   }
 
   render() {
-    const { path, workPath } = this.state
+    const { path, rootPath } = this.state
     return (
       <header className="pl-16 pr-16 app-titlebar flex center">
         <p>{path}</p>
-        <Button type="text" className="app-titlebar-workPath text-gray" onClick={this.selectPath}>
-          工作目录： {workPath}
+        <Button type="text" className="app-titlebar-rootPath text-gray" onClick={this.selectPath}>
+          工作目录： {rootPath}
         </Button>
       </header>
     )
@@ -43,10 +43,10 @@ export class AppTitlebar extends React.Component<{}, State> {
       .showOpenDialog({ properties: ['openDirectory', 'createDirectory', 'promptToCreate'] })
       .then(({ canceled, filePaths }) => {
         if (!canceled) {
-          this.setState({ workPath: filePaths[0] }, this.setRootPath)
+          this.setState({ rootPath: filePaths[0] }, this.setRootPath)
         }
       })
   }
 
-  setRootPath = () => $db.set('workPath.rootPath', this.state.workPath)
+  setRootPath = () => $db.set('workPaths.rootPath', this.state.rootPath)
 } // class AppTitlebar end
