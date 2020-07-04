@@ -91,6 +91,7 @@
   "dependencies": {
     "await-to-js": "^2.1.1",
     "cosmiconfig": "^6.0.0",
+    "electron-updater": "^4.3.1",
     "pify": "^5.0.0",
     "react-responsive-masonry": "^2.1.0",
     "xterm-addon-fit": "^0.4.0",

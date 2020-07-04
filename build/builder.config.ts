@@ -4,8 +4,9 @@
  */
 
 import path from 'path'
-import { Configuration, CliOptions } from 'electron-builder'
+import { Configuration, CliOptions, Platform } from 'electron-builder'
 import devConfig from './dev.config'
+import { platform } from 'os'
 
 const ICON_ICO = path.resolve(__dirname, '../assets/app-icon/icon/icon.ico')
 const ICON_ICNS = path.resolve(__dirname, '../assets/app-icon/icon/icon.icns')
@@ -15,6 +16,8 @@ const {
   npm_package_buildVersion: buildVersion,
   npm_package_appId: appId,
   npm_package_version: version,
+  API_PROTOCOL,
+  API_HOST,
 } = process.env
 
 const config: Configuration = {
@@ -27,6 +30,12 @@ const config: Configuration = {
     buildResources: 'assets',
     output: path.join(devConfig.release, `${productName}-release-${version}.${buildVersion}`),
   },
+  publish: [
+    {
+      provider: 'generic',
+      url: API_PROTOCOL + API_HOST + '/download', //更新服务器地址,可为空
+    },
+  ],
   win: {
     icon: ICON_ICO,
     target: ['nsis', 'msi'],
@@ -49,6 +58,7 @@ const config: Configuration = {
 }
 
 const packageConfig: CliOptions = {
+  //   targets: Platform.WINDOWS.createTarget(),
   config,
 }
 
