@@ -2,6 +2,7 @@ import path from 'path'
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron'
 import { log } from '../log'
 import routes from '@/src/auto-routes'
+import { checkVersion } from './updater'
 
 const { NODE_ENV, port, host } = process.env
 
@@ -100,7 +101,7 @@ export function createWindow(key: RouterKey, options: CreateWindowOptions = {}):
           win.show()
         }
       }
-
+      checkVersion()
       resolve(win)
     })
 

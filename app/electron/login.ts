@@ -18,6 +18,11 @@ ipcMain.on('gitLab-login', (event, data) => {
       $tools.log.error('请求出错')
     }
   })
+
+  // 应用卸载前清空事件防止泄露
+  window.addEventListener('beforeunload', function () {
+    session.defaultSession.webRequest.onCompleted({ urls: [callbackURL] }, null)
+  })
 })
 
 export const createLoginWindow = (url: string = $tools.APP_CALLBACK) => {

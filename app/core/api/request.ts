@@ -4,6 +4,8 @@ import { errorAction } from './handle-response'
 
 // axios 跨域请求携带 cookie
 axios.defaults.withCredentials = true
+// node 环境下devtool里抓不到请求， x
+axios.defaults.adapter = require('axios/lib/adapters/http')
 
 const DEFAULT_CONFIG = {
   method: 'POST',

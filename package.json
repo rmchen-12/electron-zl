@@ -33,7 +33,6 @@
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
     "antd": "^4.0.1",
-    "axios": "^0.19.2",
     "chalk": "^3.0.0",
     "classnames": "^2.2.6",
     "cross-env": "^7.0.1",
@@ -90,6 +89,7 @@
   "homepage": "https://github.com/rmchen-12/electron-zl#readme",
   "dependencies": {
     "await-to-js": "^2.1.1",
+    "axios": "^0.18.0",
     "cosmiconfig": "^6.0.0",
     "pify": "^5.0.0",
     "react-responsive-masonry": "^2.1.0",

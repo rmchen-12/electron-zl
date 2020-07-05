@@ -22,20 +22,24 @@ const devConfig = {
     },
 
     // dev 环境变量 (npm run dev 将使用此配置)
-    dev: {
+    prod: {
       variables: {
         API_PROTOCOL: 'http://',
         API_HOST: 'localhost:7001',
         API_BASE_PATH: '/',
+        // 更新包地址
+        RELEASE_HOST: 'localhost:7002',
       },
     },
 
     // prod 环境变量 (npm run build 将使用此配置)
-    prod: {
+    dev: {
       variables: {
         API_PROTOCOL: 'http://',
         API_HOST: '10.1.10.34:7001',
         API_BASE_PATH: '/',
+        // 更新包地址
+        RELEASE_HOST: '10.1.10.34:7002',
       },
     },
   },

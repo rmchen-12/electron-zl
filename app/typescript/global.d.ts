@@ -14,6 +14,8 @@ declare namespace NodeJS {
     API_HOST: string
     /** API 根路径 */
     API_BASE_PATH: string
+    /** 更新包下载域名 */
+    RELEASE_HOST: string
   }
 }
 

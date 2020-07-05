@@ -1,6 +1,6 @@
 import { app, Tray } from 'electron'
-
 import { creatAppTray } from './tray'
+import { checkVersion } from './updater'
 
 $tools.log.info(`Application <${$tools.APP_NAME}> launched.`)
 

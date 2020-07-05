@@ -1,6 +1,9 @@
 import { app, BrowserWindowConstructorOptions } from 'electron'
 import { asAssetsPath } from './paths'
 
+/** 应用后端服务地址 */
+export const API_URL = `${process.env.API_PROTOCOL}${process.env.API_HOST}`
+
 /** 应用名称 */
 export const APP_NAME = app.name
 
@@ -14,10 +17,13 @@ export const APP_TITLE = 'Swim'
 export const APP_ICON = asAssetsPath('app-icon/app-icon@256.png')
 
 /** gitLab登录地址 */
-export const APP_CALLBACK = 'http://localhost:7001/passport/gitlab/'
+export const APP_CALLBACK = `${API_URL}/passport/gitlab/`
 
 /** gitLab ehome-admin地址 */
 export const GITLAB_EHOME_ADMIN = 'http://10.1.1.217/eh-front-end/ehome-admin/'
+
+/** 应用自动更新地址 */
+export const UPDATE_URL = `${process.env.API_PROTOCOL}${process.env.RELEASE_HOST}/download/`
 
 /** 亮色风格托盘图标 标准尺寸 16*16, 系统会自动载入 @2x 和 @3x */
 export const TRAY_ICON_LIGHT = asAssetsPath('tray-icon/tray-icon-light.png')
